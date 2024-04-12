@@ -4,3 +4,16 @@
 
 # Resources
 In AG there are a lot of resources such as calculator and datasheets.
+
+# Parameters
+NIA 1: 
+100454242
+
+NIA 2: 
+100451730
+
+Center frequency: 3 GHz
+Passband limits: 2.925 GHz — 3.075 GHz
+Lower atenuation band limit: 2.85 GHz
+Higher atenuation band limit: 3.15 GHz
+Last modified: Wednesday, 23 March 2022, 9:09 AM
