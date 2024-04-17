@@ -433,7 +433,7 @@ For the dielectric thickness, we can see in Figure \ref{fig:previous_work:duroid
 
 \subsection{Final substrate selection}
 
-For the substrate, we will select the \textit{RT/Duroid 6006} as it is the best one for the same price that fits the contratins required. For the dielectric thickness, we will use a $h = 1.27 mm$ for the very same reason. Choosing this dielectric will make our circuit as small as possible while keeping the losses at minimum. The price is not a concern as the \textit{Fiberglass (FR4)}, even though it is the cheapest, we decided to discarded due to its really high $\tan \delta$. And among the rest of the substrates, the price is the same.
+For the substrate, we will select the \textit{RT/Duroid 6006} as it is the best one for the same price that fits the constraints required. For the dielectric thickness, we will use a $h = 1.27 mm$ for the very same reason. Choosing this dielectric will make our circuit as small as possible while keeping the losses at minimum. The price is not a concern as the \textit{Fiberglass (FR4)}, even though it is the cheapest, we decided to discarded due to its really high $\tan \delta$. And among the rest of the substrates, the price is the same.
 
 Finally, in the Figure \ref{fig:previous_work:duroid_6006_h_1_27_mm_50_ohm}, we can see the calculations of the final width of $w = 1.85 mm$ for a characteristic impedance of $Z_{0} = 50 \Omega$ and a dielectric thickness of $h = 1.27 mm$. As we can see, the width is bigger than $w = 200 \mu m$, therefore it checks the constraints and it will be the one we will be using further on.
 
@@ -786,9 +786,86 @@ If we simulate the circuit with AWR (see Figure \ref{fig:design_circuit_elements
 %-----------------------------------------------------------
 \chapter{Design and Characterization of the Microstrip Elements}
 
-\section{Wilkinson Power Divider/Combiner}
+\section{Wilkinson Power Divider / Combiner}
 
+In order to divide the input signal from the simple amplifier into to equal signals and then join the signals together after they have been amplified in the second stage, we will be using a Wilkinson divider / combiner.
 
+\subsection{Ideal Wilkinson Power Divider / Combiner}
+
+First we have designed an ideal Wilkinson divider / combiner (see Figure \ref{fig:microstrip_elements:wilkinson_ideal_circuit}). We have used a resistance of $R = 2 \* Z_0 = 100 \Omega$ for the resistance between the two output ports. And also a characteristic impedance of the lines of $Z_{0,W} = \sqrt{2} \* Z_0 \ \Omega = 70.71 \ \Omega$.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/microstrip_elements/wilkinson_ideal_circuit.png}
+    \caption{Ideal Wilkinson power divider / combiner circuit}
+    \label{fig:microstrip_elements:wilkinson_ideal_circuit}
+\end{figure}
+
+If we simulate the circuit of Figure \ref{fig:microstrip_elements:wilkinson_ideal_circuit}, we get the following graph (see Figure \ref{fig:microstrip_elements:wilkinson_ideal_graph}). Here we can see that the reflected power is 0 as $s_{11} = - 249 dB$. And the transmitted power for each port is $s_{21} = s_{31} = 3 \ dB = 0.5$, that is half of the input power goes to each port.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_ideal_graph.png}
+    \caption{Simulation of an ideal Wilkinson power divider / combiner}
+    \label{fig:microstrip_elements:wilkinson_ideal_graph}
+\end{figure}
+
+\subsection{Implementation with transmission lines}
+
+In order to implement this in our design, we will have to adapt the ideal Wilkinson power divider / combiner to our circuit. For this we will have to calculate the width and length of the TLs for a characteristic impedance of $Z_{0,W} = 70.71 \ \Omega$. For this we have used the TXLine tool of AWR and we got a width of $w = 0.9065 mm$ and a height of $h = 12.19 mm$ (see Figure \ref{fig:microstrip_elements:wilkinson_real_txline_tool_calculations}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_real_txline_tool_calculations.png}
+    \caption{Calculations of the width and height of the Wilkinson power divider / combiner}
+    \label{fig:microstrip_elements:wilkinson_real_txline_tool_calculations}
+\end{figure}
+
+Now, if we simulate the following circuit with the TL with the correct dimensions (see Figure \ref{fig:microstrip_elements:wilkinson_real_circuit}), we get the graph shown in Figure \ref{fig:microstrip_elements:wilkinson_real_graph}.
+Here we can observe that the implementation of the Wilkinson power divider / combiner works correctly as it divides the power in half and it has almost no reflection. However, this implementation is really difficult to implement in a microstrip line, so let's change the design to make it easier to implement.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_real_circuit.png}
+    \caption{Microstrip circuit design of the Wilkinson power divider / combiner}
+    \label{fig:microstrip_elements:wilkinson_real_circuit}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_real_graph.png}
+    \caption{Simulation of the real Wilkinson power divider / combiner}
+    \label{fig:microstrip_elements:wilkinson_real_graph}
+\end{figure}
+
+\subsection{Implementation with TEE junctions}
+
+In order to incorporate the Wilkinson power divider / combiner in a microstrip technology, we will be using TEE junctions as \question{why is it better?}. For this implementation we will have to calculate the different radius shown in Figure \ref{fig:microstrip_elements:wilkinson_tee_design}. Note that the Gap will be the one required to solder the 0603 SMD resistor, for our case, we will be using $Gap = 1 mm$.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_tee_design.png}
+    \caption{Design for the implementation of a Wilkinson with TEE junctions}
+    \label{fig:microstrip_elements:wilkinson_tee_design}
+\end{figure}
+
+\begin{align*}
+    r_1 &= \frac{1}{2} \* (\frac{\lambda}{2 \* \pi} + \frac{W_{50} + Gap}{2})  = \frac{1}{2} \* (\frac{c}{2 \* \pi \* f \* \sqrt{\epsilon_r}} + \frac{W_{50} + Gap}{2})  \\
+    &= \frac{1}{2} \* (\frac{3 \cdot 10^8}{2 \* \pi \* 3 \cdot 10^9 \* \sqrt{6.15}} + \frac{1.85 \cdot 10^{-3} + 1 \cdot 10^{-3}}{2})  \\
+    &= 4.031 \cdot 10^{-3} m = 4.031 mm \\
+    \\
+    r_2 &= r_1 - \frac{W_{50} + Gap}{2}  \\
+    &= 4.031 \cdot 10^{-3} - \frac{1.85 \cdot 10^{-3} + 1 \cdot 10^{-3}}{2}  \\
+    &= 2.606 \cdot 10^{-3} m = 2.606 mm \\
+    \\
+    r_3 &= \frac{\lambda}{2} = \frac{c}{f \* \sqrt{\epsilon_r}} \\
+    &= \frac{3 \cdot 10^8}{3 \cdot 10^9 \* \sqrt{6.15}} \\
+    &= 0.04032 m = 40.32 mm \\
+\end{align*}
+
+Note: the width, $W_{50} = 1.85 mm$, we use is the one calculated in Figure \ref{fig:previous_work:duroid_6006_h_1_27_mm_50_ohm}.
+
+\todo{add circuit, graph and layout}
 
 \section{First Stage: Simple Amplifier}
 
