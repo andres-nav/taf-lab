@@ -682,6 +682,14 @@ Given the following values in the Figure \ref{fig:introduction:initial_parameter
 \text{Upper attenuation band limit} & : f_{a2} = 3.15 GHz\\
 \end{align*}
 
+Where:
+\begin{align*}
+w'_{p1} &= 2 \* \pi \* f'_{p1} = 2 \* \pi \* 2.925 \cdot 10^9 = 1.838 \cdot 10^{10} rad/s \\
+w'_{p2} &= 2 \* \pi \* f'_{p2} = 2 \* \pi \* 3.075 \cdot 10^9 = 1.932 \cdot 10^{10} rad/s \\
+w'_{a1} &= 2 \* \pi \* f'_{a1} = 2 \* \pi \* 2.85 \cdot 10^9 = 1.791 \cdot 10^{10} rad/s \\
+w'_{a2} &= 2 \* \pi \* f'_{a2} = 2 \* \pi \* 3.15 \cdot 10^9 = 1.979 \cdot 10^{10} rad/s \\
+\end{align*}
+
 And also, we have a requirement of a minimum attenuation of 25 dB. Therefore, we will be choosing an attenuation of $\alpha_{a} = 30 dB$ to be sure that the filter works correctly. As we want the input losses to be bigger than $20 dB$ then:
 
 \begin{align*}
@@ -695,16 +703,110 @@ Now that we have the return loss, we can calculate the maximum transmission loss
 \alpha_{p} &= - 20 \* \log_{10}(s_{12}) \\
 &= \-20 \* \log_{10}(\sqrt{1 - s_{11}^2}) \\
 &= \-20 \* \log_{10}(\sqrt{1 - 0.032^2}) \\
-&= 4.35 dBm
+&= 4.45 \cdot 10^{-3} dB
 \end{align*}
 
-\question{is this right? as they are not in the same column? do we want to be lossless? it is the only way if can think of to calculate the max attenuation at the pass band}
+Now with the attenuation at each stage, the bandwidth of our filter is:
 
-\question{how to calculate the order, do we use Chevyshev?}
+\begin{align*}
+B &= \frac{(w'_{p2} - w'_{p1})}{w_p} = \frac{1.932 \cdot 10^{10} - 1.838 \cdot 10^{10}}{1} \\
+&= 9.4 \cdot 10^{8} rad/s \\
+\end{align*}
+
+Where:
+\begin{align*}
+w_p &= 1 rad/s \text{as it is the normalized angular frequency}
+\end{align*}
+
+And finally, we can calculate the filter order of our design by:
+
+\begin{align*}
+N &\geq \frac{\cosh^{-1}{1/k_d}}{\cosh^{-1}{1/k_s}} \\
+&\geq \frac{\cosh^{-1}{1/1.013 \cdot 10^{-3}}}{\cosh^{-1}{1/0.509}} \\
+&\geq 5.853 \Rightarrow N = 6
+\end{align*}
+
+Where:
+\begin{align*}
+w_0^2 &= w'_{p2} \* w'_{p1} = 1.932 \cdot 10^{10} \cdot 1.838 \cdot 10^{10} \\
+&= 3.551 \cdot 10^{20} \ (rad/s)^2 \\
+w_{a1} &= \frac{((w'_{a1})^2 - w_{0}^2)}{B \* w'_{a1}} = \frac{(1.791 \cdot 10^{10})^2 - 3.551 \cdot 10^{20}}{9.4 \cdot 10^8 \cdot 1.791 \cdot 10^{10}} \\
+&= -2.029 \\
+w_{a2} &= \frac{((w'_{a2})^2 - w_{0}^2)}{B \* w'_{a2}} = \frac{(1.979 \cdot 10^{10})^2 - 3.551 \cdot 10^{20}}{9.4 \cdot 10^8 \cdot 1.979 \cdot 10^{10}} \\
+&= 1.964 \\
+w_a &= \min (|w_{a1} |, |w_{a2}|) = \min (2.029, 1.964) \\
+&= 1.964 \\
+k_s &= \frac{w_p}{w_a} = \frac{1}{1.964} \\
+&= 0.509 \\
+k_d &= \sqrt{\frac{1 - 10^{\alpha_p / 10}}{1 - 10^{\alpha_a / 10}}} = \sqrt{\frac{1 - 10^{4.45 \cdot 10^{-3} / 10}}{1 - 10^{30 / 10}}} \\
+&= 1.013 \cdot 10^{-3}
+\end{align*}
 
 \subsection{Parameters of the frequency and impedance transforms}
 
-\todo{and a lot more todo, but how?}
+\question{what is this?????}
+
+\subsection{Calculations of the normalized elements of the Chebyshev filter}
+
+To calculate the coefficients of the Chebyshev filter with order 6, we will be using the calculator found in Aula Global. In our case, as the requirements for the return losses are that it must be at least 18 dB, we will be using an attenuation of 25 dB. See Figure \ref{fig:design_circuit_elements:chebyshev_filter_normalized_elements_calculator} to see the coefficients we will be using for the normalized elements ($g_i$). 
+
+Here are the values that we will be using:
+\begin{align*}
+g_1 &= 0.820541 \\
+g_2 &= 1.376845 \\
+g_3 &= 1.728513 \\
+g_4 &= 1.544460 \\
+g_5 &= 1.540923 \\
+g_6 &= 0.733169 \\
+g_7 &= 1.119170 \\
+\end{align*}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/chebyshev_filter_normalized_elements_calculator.png}
+    \caption{Calculations of the Chebyshev coefficients using the Aula Global calculator}
+    \label{fig:design_circuit_elements:chebyshev_filter_normalized_elements_calculator}
+\end{figure}
+
+\subsection{Calculations of the inverters and even and odd impedances of the couple lines}
+
+\question{Esto esta bien? lo he sacado de esta url pero no estoy seguro}
+\url{https://medivague.com/bpf-coupled-line-theory/}
+
+In order to calculate the inverters ($J_i$), we will use a bandwidth of $\Delta = 5\%$ as stated in the requirements. So let's calculate the inverters for the pass band filter to be able to implemented as a series of coupled lines. Note that as our filter order is 6, we will be using $6 + 1 = 7$ coupled lines.
+
+\begin{align*}
+J_1 \cdot Z_0 &= \sqrt{\frac{\pi \* \Delta}{2 \* g_1}} = \sqrt{\frac{\pi \cdot 0.05}{2 \cdot 0.820541}} = 0.30938 \\
+J_2 \cdot Z_0 &= \frac{\pi \* \Delta}{2 \cdot \sqrt{g_1 \cdot g_2}} = \frac{\pi \cdot 0.05}{2 \cdot \sqrt{0.820541 \cdot 1.376845}} = 0.07389 \\
+J_3 \cdot Z_0 &= \frac{\pi \* \Delta}{2 \cdot \sqrt{g_2 \cdot g_3}} = \frac{\pi \cdot 0.05}{2 \cdot \sqrt{1.376845 \cdot 1.728513}} = 0.05091 \\
+J_4 \cdot Z_0 &= \frac{\pi \* \Delta}{2 \cdot \sqrt{g_3 \cdot g_4}} = \frac{\pi \cdot 0.05}{2 \cdot \sqrt{1.728513 \cdot 1.544460}} = 0.048069 \\
+J_5 \cdot Z_0 &= \frac{\pi \* \Delta}{2 \cdot \sqrt{g_4 \cdot g_5}} = \frac{\pi \cdot 0.05}{2 \cdot \sqrt{1.544460 \cdot 1.540923}} = 0.050911 \\
+J_6 \cdot Z_0 &= \frac{\pi \* \Delta}{2 \cdot \sqrt{g_5 \cdot g_6}} = \frac{\pi \cdot 0.05}{2 \cdot \sqrt{1.540923 \cdot 0.733169}} = 0.073892 \\
+J_7 \cdot Z_0 &= \sqrt{\frac{\pi \* \Delta}{2 \cdot g_6 \cdot g_7}} = \sqrt{\frac{\pi \cdot 0.05}{2 \cdot 0.733169 \cdot 1.119170}} = 0.309382 \\
+\end{align*}
+
+And now we calculate the even and odd impedances of the coupled lines:
+
+\begin{align*}
+Z_{0e1} &= Z_0 \cdot (1 + J_1 \cdot Z_0 + (J_1 \cdot Z_0)^2) = 50 \cdot (1 + 0.30938 + (0.30938)^2) = 70.255\Omega \\
+Z_{0o1} &= Z_0 \cdot (1 - J_1 \cdot Z_0 + (J_1 \cdot Z_0)^2) = 50 \cdot (1 - 0.30938 + (0.30938)^2) = 39.317\Omega \\
+Z_{0e2} &= Z_0 \cdot (1 + J_2 \cdot Z_0 + (J_2 \cdot Z_0)^2) = 50 \cdot (1 + 0.07389 + (0.07389)^2) = 53.967\Omega \\
+Z_{0o2} &= Z_0 \cdot (1 - J_2 \cdot Z_0 + (J_2 \cdot Z_0)^2) = 50 \cdot (1 - 0.07389 + (0.07389)^2) = 46.578\Omega \\
+Z_{0e3} &= Z_0 \cdot (1 + J_3 \cdot Z_0 + (J_3 \cdot Z_0)^2) = 50 \cdot (1 + 0.05091 + (0.05091)^2) = 52.675\Omega \\
+Z_{0o3} &= Z_0 \cdot (1 - J_3 \cdot Z_0 + (J_3 \cdot Z_0)^2) = 50 \cdot (1 - 0.05091 + (0.05091)^2) = 47.584\Omega \\
+Z_{0e4} &= Z_0 \cdot (1 + J_4 \cdot Z_0 + (J_4 \cdot Z_0)^2) = 50 \cdot (1 + 0.048069 + (0.048069)^2) = 52.519\Omega \\
+Z_{0o4} &= Z_0 \cdot (1 - J_4 \cdot Z_0 + (J_4 \cdot Z_0)^2) = 50 \cdot (1 - 0.048069 + (0.048069)^2) = 47.712\Omega \\
+Z_{0e5} &= Z_0 \cdot (1 + J_5 \cdot Z_0 + (J_5 \cdot Z_0)^2) = 50 \cdot (1 +  0.050911 + ( 0.050911)^2) = 52.675\Omega \\
+Z_{0o5} &= Z_0 \cdot (1 - J_5 \cdot Z_0 + (J_5 \cdot Z_0)^2) = 50 \cdot (1 -  0.050911 + ( 0.050911)^2) = 47.584\Omega \\
+Z_{0e6} &= Z_0 \cdot (1 + J_6 \cdot Z_0 + (J_6 \cdot Z_0)^2) = 50 \cdot (1 + 0.073892 + (0.073892)^2) = 53.968\Omega \\
+Z_{0o6} &= Z_0 \cdot (1 - J_6 \cdot Z_0 + (J_6 \cdot Z_0)^2) = 50 \cdot (1 - 0.073892 + (0.073892)^2) = 46.578\Omega \\
+Z_{0e7} &= Z_0 \cdot (1 + J_7 \cdot Z_0 + (J_7 \cdot Z_0)^2) = 50 \cdot (1 + 0.309382 + (0.309382)^2) = 70.255\Omega \\
+Z_{0o7} &= Z_0 \cdot (1 - J_7 \cdot Z_0 + (J_7 \cdot Z_0)^2) = 50 \cdot (1 - 0.309382 + (0.309382)^2) = 39.317\Omega \\
+\end{align*}
+
+\subsection{Simulation of the ideal pass band filter}
+
+First, we will simulate the inverters and then compare it to the couple lines and see if they work as expected
 
 \section{Directional Coupler}
 
