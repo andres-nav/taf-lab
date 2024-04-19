@@ -284,22 +284,6 @@ hmargin=3cm
 
 
 %----------
-%	DEDICATORIA
-%----------	
-\chapter*{Dedicatoria} % \chapter* evita que aparezca en el índice
-
-\setcounter{page}{5}
-	
-	% ESCRIBIR LA DEDICATORIA AQUÍ	
-		
-	\vfill
-	
-	\newpage % página en blanco o de cortesía
-	\thispagestyle{empty}
-	\mbox{}
-	
-
-%----------
 %	ÍNDICES
 %----------	
 
@@ -311,25 +295,6 @@ hmargin=3cm
 
 \newpage % página en blanco o de cortesía
 \thispagestyle{empty}
-
-% Índice de figuras. Si no se incluyen, comenta las líneas siguientes
-%-
-\listoffigures
-\thispagestyle{fancy}
-
-\newpage % página en blanco o de cortesía
-\thispagestyle{empty}
-\mbox{}
-
-%--
-% Índice de tablas. Si no se incluyen, comenta las líneas siguientes
-%-
-\listoftables
-\thispagestyle{fancy}
-
-\newpage % página en blanco o de cortesía
-\thispagestyle{empty}
-\mbox{}
 
 
 %----------
@@ -356,7 +321,7 @@ For our case the initial parameters that we will be using will be the ones given
     \label{fig:introduction:initial_parameters}
 \end{figure}
 
-\todo{add a section with the constants used}
+\todo{add a section with the constants used (image of awr)}
 
 
 %-------------------------------------
@@ -481,7 +446,7 @@ On the other hand, if we study the circuit at the designed frequency $f = 3 GHz$
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{images/design_circuit_elements/gva83+_bias_f_3_ghz.png}
-    \caption{Bias network of the GVa83+ Amplifier at $f = 3 GHz$}
+    \caption{Bias network of the GVA83+ Amplifier at $f = 3 GHz$}
     \label{fig:design_circuit_elements:gva83+_bias_f_3_ghz}
 \end{figure}
 
@@ -491,27 +456,29 @@ The analysis of the proposed Bias Network with the Transmission Line (TL) (see F
 
 At $f = 0 GHz$, the capacitors act as open circuits and the TL acts as a short circuit. Again, since the output is not connected to the amplifier, the circuit does not work as previously stated. On the other hand, at $f = 3 GHz$, the capacitors act as a short circuit and the TL acts as an open circuit as before. The gain of the circuit is still the same as before $G = Av = s{21}$.
 
-In order to calculate the length of the TL in order to function as the inductor, we need to get the highest possible value of the characteristic impedance ($Z_0$). For this we have used the AWR TXLine tool and we got a length of $l = 12.692 mm$ with a characteristic impedance of $Z_0 = 130.62 \Omega$ (see Figure \ref{fig:design_circuit_elements:txline_tool_bias_network_amplifier_transmission_line}). Keep in mind that we have used the minimum width available $w = 200 \mu m$ in order to make it as small as possible. The reasoning for getting the maximum $Z_0$ is because that way, the TL will behave like an open circuit for high frequencies and like a short circuit for low frequencies.
+Now if we study the inductor, we want that the inductor acts as a short circuit at $f = 0 GHz$ and as an open circuit at $f = 3 GHz$. For this, when $f = 0 GHz$, the TL acts like a normal cable so it can be neglected. Thus, the amplifier is connected to $V_{cc}$, powering up the amplifier. On the other hand, we want that at $f = 3 GHz$ the TL to act like a short circuit. We can see that as the capacitor acts like a short circuit in $f = 3 GHz$, we will have an impedance of 0 at the end of the TL between the capacitor and the resistor. So if we make the length of the TL of $l = \frac{\lambda}{4}$, we will have at the output port an impedance of $\infty$.
 
-\question{is this explanation correct for the max $Z_0$ to get the length? is the calculation correct}
+
+In order to calculate the length of the TL in order to function as the inductor, we need to get the highest possible value of the characteristic impedance ($Z_0$). For this we have used the AWR TXLine tool and we got a length of $l = 12.692 mm$ with a characteristic impedance of $Z_0 = 130.62 \Omega$ (see Figure \ref{fig:design_circuit_elements:txline_tool_bias_network_amplifier_transmission_line}). Keep in mind that we have used the minimum width available $w = 200 \mu m$ in order to make it as small as possible. The reasoning for getting the maximum $Z_0$ is because that way, the TL will behave like an open circuit for high frequencies and like a short circuit for low frequencies.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{images/design_circuit_elements/gva83+_bias_transmission_line.png}
-    \caption{Proposed Bias Network of the GVa83+ Amplifier with a TL}
+    \caption{Proposed Bias Network of the GVA83+ Amplifier with a TL}
     \label{fig:design_circuit_elements:gva83+_bias_transmission_line}
 \end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{images/design_circuit_elements/txline_tool_bias_network_amplifier_transmission_line.png}
-    \caption{Length and $Z_0$ calculations of the TL of the Bias Network}
-    \label{fig:design_circuit_elements:txline_tool_bias_network_amplifier_transmission_line}
-\end{figure}
+\subsection{Wide band Simulation of the Vendor's Bias Network}
 
-\question{We want a $Z_0$ as high as possible to make the TL the shortest no?}
+\todo{add simulation}
 
-\section{GVA-83+ respone}
+\subsection{Wideband Simulation of the Proposed Bias Network}
+
+\todo{add simulation}
+
+\todo{Modify the characteristic impedance of the transmission line, and justify why it is interesting to use a characteristic impedance as high as possible.}
+
+\section{GVA83+ response}
  
 \subsection{Scattering parameters at f = 3 GHz}
 
@@ -668,6 +635,7 @@ As shown previously in the Subsection \ref{subsec:gain_each_amplifier_and_full_t
 
 \question{do i have to put the same of the section? or what?}
 
+\todo{until here is all checked good}
 \section{Band Pass Filter}
 
 \subsection{Filter order from the bandwidth, in-band return loss and the minimum attenuation at the stop bands}
@@ -804,9 +772,13 @@ Z_{0e7} &= Z_0 \cdot (1 + J_7 \cdot Z_0 + (J_7 \cdot Z_0)^2) = 50 \cdot (1 + 0.3
 Z_{0o7} &= Z_0 \cdot (1 - J_7 \cdot Z_0 + (J_7 \cdot Z_0)^2) = 50 \cdot (1 - 0.309382 + (0.309382)^2) = 39.317\Omega \\
 \end{align*}
 
-\subsection{Simulation of the ideal pass band filter}
+\subsection{Simulation of the ideal band pass filter}
 
-First, we will simulate the inverters and then compare it to the couple lines and see if they work as expected
+In order to simulate the band pass filter, we will implement it with ideal inverters first and then with ideal coupled lines. And after that we will compare the two and see if we get similar results.
+
+\todo{simulation of inverters}
+
+\todo{simulation of coupled lines}
 
 \section{Directional Coupler}
 
@@ -824,8 +796,6 @@ C &= 10^{\frac{- C_{dB}}{10}} \\
 
 Now, in order to calculate the characteristic impedances of the even and odd modes, first we will assume an electrical length of $\lambda / 4$ or the same as $90 \deg$. That means that the coupler will be a symmetric coupler with a $90 \deg$ phase shift between the transmitted and the coupled port,
 
-\question{is this a symmetric coupler no?}
-
 Given a electrical length of $\lambda / 4$, then we can use the following formulas to calculate the characteristic impedances of the even and odd modes, for the even mode we get:
 
 \begin{align*}
@@ -840,9 +810,6 @@ Z_{0, odd} &= Z_{0} \* \sqrt{\frac{1 - C}{1 + C}} \\
 &= 45.23 \Omega \\
 \end{align*}
 
-\question{is this right? the calculation for Z0, i got it from here}
-\url{http://www.ittc.ku.edu/~jstiles/723/handouts/section_7_6_Coupled_Line_Couplers_package.pdf}
-
 \subsection{Connection of the coupler}
 
 For this coupler, the main objective is to transmit the whole power entering from the input to the transmitted and coupled ports. For this case, we want the following scattering parameter matrix:
@@ -855,8 +822,6 @@ j \* \beta & 0 & 0 & \alpha \\
 0 & j \* \beta & \alpha & 0 \\
 \end{bmatrix}
 \]
-
-\question{is this matrix ok? port 2 is the coupled}
 
 Where:
 \begin{align*}
@@ -965,6 +930,8 @@ In order to incorporate the Wilkinson power divider / combiner in a microstrip t
     &= 0.04032 m = 40.32 mm \\
 \end{align*}
 
+\todo{fix r3 as it is wrong, it only serves}
+
 Note: the width, $W_{50} = 1.85 mm$, we use is the one calculated in Figure \ref{fig:previous_work:duroid_6006_h_1_27_mm_50_ohm}.
 
 \todo{add circuit, graph and layout}
@@ -972,17 +939,61 @@ Note: the width, $W_{50} = 1.85 mm$, we use is the one calculated in Figure \ref
 \section{First Stage: Simple Amplifier}
 
 
-\subsection{Wideband Simulation of the Vendor's Bias Network}
-
-\question{Simulation done but I have a question on the length of the TLs (Andres)}
-
-\subsection{Wideband Simulation of the Proposed Bias Network}
-
-\question{Simulation done but I have a question on the length of the TLs (Andres)}
-
-
 \section{Second Stage: Balanced Amplifier}
 \section{Band Pass Filter}
+
+In the band pass filter, in order to design the circuit, we will need to calculate the parameters of the coupled lines for the microstrip implementation.
+
+\subsection{Calculations of the length, width, and separation of the coupled lines}
+
+In order to calculate the dimensions, we will be using the \href{https://wcalc.sourceforge.net/cgi-bin/coupled_microstrip.cgi}{Coupled Microstrip Analysis /Synthesis Calculator}. See Figure \ref{fig:microstrip_elements:filter_band_pass_microstrip_calculator} for the first calculation of the coupled lines.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/filter_band_pass_microstrip_calculator.png}
+    \caption{Calculator of the microstrip coupled lines for the band pass filter}
+    \label{fig:microstrip_elements:filter_band_pass_microstrip_calculator}
+\end{figure}
+
+If we repeat the process for every coupled line, we get the following results:
+\begin{align*}
+w_1 &= 1.48631 mm\\
+s_1 &= 0.417635 mm \\
+l_1 &= 12.1172 mm \\
+\\
+w_2 &= 1.84182 mm \\
+s_2 &= 2.19832 mm \\
+l_2 &= 11.8295 mm \\
+\\
+w_3 &= 1.85223 mm \\
+s_3 &= 2.91747 mm \\
+l_3 &= 11.8078 mm \\
+\\
+w_4 &= 1.85315 mm \\
+s_4 &= 3.04061 mm \\
+l_4 &= 11.8054 mm \\
+\\
+w_5 &= 1.85223 mm \\
+s_5 &= 2.91747 mm \\
+l_5 &= 11.8078 mm \\
+\\
+w_6 &= 1.84178 mm \\
+s_6 &= 2.1981 mm \\
+l_6 &= 11.8295 mm \\
+\\
+w_7 &= 1.48631 mm \\
+s_7 &= 0.417635 mm \\
+l_7 &= 12.1172 mm \\
+\end{align*}
+
+Where:
+\begin{align*}
+    &\text{w: is the width of the coupled line} \\
+    &\text{h: is the height of the coupled line} \\
+    &\text{s: is the separation of the coupled line} \\
+\end{align*}
+
+\subsection{Simulations of the microstrip implementation}
 
 \section{Directional Coupler}
 
@@ -991,8 +1002,6 @@ For the directional coupler, in order to adapt the ideal directional coupler of 
 \subsection{Calculation of the length, width, and separation of the coupled microstrip lines}
 
 In order to calculate the, we used the Tunner Tool of AWR where we modified the length (L), width (W), and separation (S) until we got a coupling of $C = 20 \ dB$ and a reflected power of as low as possible. For this simulation we have used the circuit pictured in Figure .
-
-\question{how to tune it properly, i dont get a good value}
 
 
 
