@@ -74,6 +74,7 @@ hmargin=3cm
 % DISEÑO DE LOS TÍTULOS de las partes del trabajo (capítulos y epígrafes o subcapítulos)
 \usepackage{titlesec}
 \usepackage{titletoc}
+\setcounter{tocdepth}{1}
 \titleformat{\chapter}[block]
 {\large\bfseries\filcenter}
 {\thechapter.}
@@ -376,7 +377,7 @@ Using the \textit{RT/Duroid 6010.2LM} with  a dielectric thickness of $h = 1.27 
     \label{fig:previous_work:duroid_6010.2lm_h_1_27_mm_100_ohm}
 \end{figure}
 
-Due to that inconvenience, let's study the substrate \textit{RT/Duroid 6006}. For this substrate with a $h = 1.27 mm$ and a $Z = 100 \Omega$, we get a width of $w = 0.343 mm$ (See Figure \ref{fig:previous_work:duroid_6006_h_1_27_mm_100_ohm}). This width is much better than the \textit{RT/Duroid 6010.2LM} with the $200 \mu m$ minimum width constraint as we have more room to design our circuit. Therefore, \highlight{we will be using the \textit{RT/Duroid 6006}}.
+Due to that inconvenience, let's study the substrate \textit{RT/Duroid 6006}. For this substrate with a $h = 1.27 mm$ and a $Z = 100 \Omega$, we get a width of $w = 0.343 mm$ (See Figure \ref{fig:previous_work:duroid_6006_h_1_27_mm_100_ohm}). This width is much better than the \textit{RT/Duroid 6010.2LM} with the $200 \mu m$ minimum width constraint as we have more room to design our circuit. Therefore, we will be using the \textit{RT/Duroid 6006}.
 
 \begin{figure}[htbp]
     \centering
@@ -387,7 +388,7 @@ Due to that inconvenience, let's study the substrate \textit{RT/Duroid 6006}. Fo
 
 \subsection{Substrate dielectric thickness}
 
-For the dielectric thickness, we can see in Figure \ref{fig:previous_work:duroid_6006_h_0_508_mm_100_ohm} that for the \textit{RT/Duroid 6006} with a $h = 0.508 mm$ and a $Z = 100 \Omega$, we get a width of $w = 0.128$. As stated before, that does not check the constraint of a minimum width of $w = 0.2 mm$. Because of that \highlight{we will select a dielectric thickness of $h = 1.27 mm$}.
+For the dielectric thickness, we can see in Figure \ref{fig:previous_work:duroid_6006_h_0_508_mm_100_ohm} that for the \textit{RT/Duroid 6006} with a $h = 0.508 mm$ and a $Z = 100 \Omega$, we get a width of $w = 0.128$. As stated before, that does not check the constraint of a minimum width of $w = 0.2 mm$. Because of that we will select a dielectric thickness of $h = 1.27 mm$.
 
 \begin{figure}[htbp]
     \centering
@@ -401,8 +402,6 @@ For the dielectric thickness, we can see in Figure \ref{fig:previous_work:duroid
 For the substrate, we will select the \textit{RT/Duroid 6006} as it is the best one for the same price that fits the constraints required. For the dielectric thickness, we will use a $h = 1.27 mm$ for the very same reason. Choosing this dielectric will make our circuit as small as possible while keeping the losses at minimum. The price is not a concern as the \textit{Fiberglass (FR4)}, even though it is the cheapest, we decided to discarded due to its really high $\tan \delta$. And among the rest of the substrates, the price is the same.
 
 Finally, in the Figure \ref{fig:previous_work:duroid_6006_h_1_27_mm_50_ohm}, we can see the calculations of the final width of $w = 1.85 mm$ for a characteristic impedance of $Z_{0} = 50 \Omega$ and a dielectric thickness of $h = 1.27 mm$. As we can see, the width is bigger than $w = 200 \mu m$, therefore it checks the constraints and it will be the one we will be using further on.
-
-\todo{maybe study the length a the lambda/4, i dont know how to do it (Andres)}
 
 \begin{figure}[htbp]
     \centering
@@ -470,13 +469,42 @@ In order to calculate the length of the TL in order to function as the inductor,
 
 \subsection{Wide band Simulation of the Vendor's Bias Network}
 
-\todo{add simulation}
+For the Vendor's Bias Network, we will be using the circuit pictured in Figure \ref{fig:design_circuit_elements:bias_network_vendor_circuit}. As we can see in Figure \ref{fig:design_circuit_elements:bias_network_vendor_graph}, the amplifier works as expected. It is powered by the bias network as stated before, and works correctly at our desired frequency of $f = 3 GHz$.
 
-\subsection{Wideband Simulation of the Proposed Bias Network}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/bias_network_vendor_circuit.png}
+    \caption{Circuit of the vendor's bias network}
+    \label{fig:design_circuit_elements:bias_network_vendor_circuit}
+\end{figure}
 
-\todo{add simulation}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/bias_network_vendor_graph.png}
+    \caption{Simulation of the vendor's bias network of Figure \ref{fig:design_circuit_elements:bias_network_vendor_circuit}}
+    \label{fig:design_circuit_elements:bias_network_vendor_graph}
+\end{figure}
+
+\subsection{Wide band Simulation of the Proposed Bias Network}
+
+For the proposed bias network, we will be using the circuit shown in Figure \ref{fig:design_circuit_elements:bias_network_proposed_circuit}. And for this circuit, we get the following simulation (see Figure \ref{fig:design_circuit_elements:bias_network_proposed_graph}). If we compare it to the bias network that the vendor recommended (see Figure \ref{fig:design_circuit_elements:bias_network_vendor_graph}), we can see that the values are almost the same. However ... \question{why is the proposed network better? is it because the cap makes the ground more stable for high frequency?}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/bias_network_proposed_circuit.png}
+    \caption{Circuit of the proposed bias network}
+    \label{fig:design_circuit_elements:bias_network_proposed_circuit}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/bias_network_proposed_graph.png}
+    \caption{Simulation of the proposed bias network of Figure \ref{fig:design_circuit_elements:bias_network_proposed_circuit}}
+    \label{fig:design_circuit_elements:bias_network_proposed_graph}
+\end{figure}
 
 \todo{Modify the characteristic impedance of the transmission line, and justify why it is interesting to use a characteristic impedance as high as possible.}
+\question{ why modify the characteristic impedance of the TL4? i want it to be lambda/4 no?}
 
 \section{GVA83+ response}
  
@@ -513,9 +541,9 @@ Note: this parameters are for the frequency $f = 2.9 GHz$ (see Figure \ref{fig:d
 
 The gain of just one amplifier is the scattering parameter $s_{21}$, so in our case the gain is $G = S{21} = 15.34 \ dB$. As the first stage and the second stage have just one amplifier, the gain of both of the will be the same of $G = 15.34 \ dB$. That is because the second stage behaves like a isolated amplifier with respect to the first stage.
 
-For the full network, the gain of the whole circuit will be the product of both amplifiers as they are isolated to each other. That is the total gain will be $G_T = s_{21}^2$, so in dB it is \highlight{$G_T = 2 \cdot s_{21} (in \ dB) = 2 * 15.34 = 30.60 \ dB$}.
+For the full network, the gain of the whole circuit will be the product of both amplifiers as they are isolated to each other. That is the total gain will be $G_T = s_{21}^2$, so in dB it is $G_T = 2 \cdot s_{21} (in \ dB) = 2 * 15.34 = 30.60 \ dB$.
 
-\subsection{Representation of the wide band S parameters}
+\subsection{Comparison of the wide band S parameters with the data sheet}
 
 In the Figure \ref{fig:design_circuit_elements:graph_amplifier}, we can see the scattering parameters at our working frequency $f = 3 GHz$. If we take a look at each parameter, we can clearly see that they are almost the same values as the ones we obtained from the datasheet (see Figure \ref{fig:design_circuit_elements:scattering_parameters_datasheet}).
 
@@ -631,11 +659,24 @@ So the optimal phase shift for the configuration (c) is $\phi = \frac{\pi}{2}$.
 
 \subsection{Relationship between the output power at each branch of the balanced stage, and the total power at the output of the full balanced stage}
 
-As shown previously in the Subsection \ref{subsec:gain_each_amplifier_and_full_two_stage},
+As shown previously in the Subsection \ref{subsec:gain_each_amplifier_and_full_two_stage}, we can see that the gain of one amplifier is $G = 15.34 dB$. As we are dividing the input power by half at the input and the amplifying in each branch, the power at the end of each branch will be the same and will have a gain of $12.34 dB$ with respect to the input power at the balanced stage. Finally, as we are combining both signals with the same phase, we will have a total gain of $G_T = 15.34 dB$ in balanced stage.
 
-\question{do i have to put the same of the section? or what?}
+If we simulate the results (see the circuit in Figure \ref{fig:design_circuit_elements:balanced_amplifier_ideal_circuit}), we can see that the gain of the amplifier is exactly 15 dB, almost the same as the one calculated (see Figure \ref{fig:design_circuit_elements:balanced_amplifier_ideal_graph}).
 
-\todo{until here is all checked good}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/balanced_amplifier_ideal_circuit.png}
+    \caption{Ideal balanced amplifier circuit}
+    \label{fig:design_circuit_elements:balanced_amplifier_ideal_circuit}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/balanced_amplifier_ideal_graph.png}
+    \caption{Simulation of the ideal balanced amplifier (see Figure \ref{fig:design_circuit_elements:balanced_amplifier_ideal_circuit})}
+    \label{fig:design_circuit_elements:balanced_amplifier_ideal_graph}
+\end{figure}
+
 \section{Band Pass Filter}
 
 \subsection{Filter order from the bandwidth, in-band return loss and the minimum attenuation at the stop bands}
@@ -683,7 +724,7 @@ B &= \frac{(w'_{p2} - w'_{p1})}{w_p} = \frac{1.932 \cdot 10^{10} - 1.838 \cdot 1
 
 Where:
 \begin{align*}
-w_p &= 1 rad/s \text{as it is the normalized angular frequency}
+w_p &= 1 rad/s \text{ as it is the normalized angular frequency}
 \end{align*}
 
 And finally, we can calculate the filter order of our design by:
@@ -712,7 +753,7 @@ k_d &= \sqrt{\frac{1 - 10^{\alpha_p / 10}}{1 - 10^{\alpha_a / 10}}} = \sqrt{\fra
 
 \subsection{Parameters of the frequency and impedance transforms}
 
-\question{what is this?????}
+For the parameters, there were calculate before in order to get the filter order. We get a center pulsation of $w_0 = 1.8844 \cdot 10^{10} rad/s = 3 GHz$ as expected and a bandwidth of $B = 9.4 \cdot 10^{9} rad/s = 0.15 GHz$; which correspond to the requirements of the filter.
 
 \subsection{Calculations of the normalized elements of the Chebyshev filter}
 
@@ -737,9 +778,6 @@ g_7 &= 1.119170 \\
 \end{figure}
 
 \subsection{Calculations of the inverters and even and odd impedances of the couple lines}
-
-\question{Esto esta bien? lo he sacado de esta url pero no estoy seguro}
-\url{https://medivague.com/bpf-coupled-line-theory/}
 
 In order to calculate the inverters ($J_i$), we will use a bandwidth of $\Delta = 5\%$ as stated in the requirements. So let's calculate the inverters for the pass band filter to be able to implemented as a series of coupled lines. Note that as our filter order is 6, we will be using $6 + 1 = 7$ coupled lines.
 
@@ -776,9 +814,37 @@ Z_{0o7} &= Z_0 \cdot (1 - J_7 \cdot Z_0 + (J_7 \cdot Z_0)^2) = 50 \cdot (1 - 0.3
 
 In order to simulate the band pass filter, we will implement it with ideal inverters first and then with ideal coupled lines. And after that we will compare the two and see if we get similar results.
 
-\todo{simulation of inverters}
+In the Figure \ref{fig:design_circuit_elements:band_pass_filter_inverters_circuit}, we can see the circuit we implemented with inverters and the values calculated previously. If we check the simulation (see Figure \ref{fig:design_circuit_elements:band_pass_fitlter_inverters_graph}), we can see that the filter behaves correctly as the requirements stated. The attenuation at the pass band is less than 25 dB while the attenuation outside the attenuation band is more than 30 dB.
 
-\todo{simulation of coupled lines}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/band_pass_filter_inverters_circuit.png}
+    \caption{Circuit implementation of the band pass filter with inverters}
+    \label{fig:design_circuit_elements:band_pass_filter_inverters_circuit}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/band_pass_fitlter_inverters_graph.png}
+    \caption{Simulation of the band pass filter with inverters of Figure \ref{fig:design_circuit_elements:band_pass_filter_inverters_circuit}}
+    \label{fig:design_circuit_elements:band_pass_fitlter_inverters_graph}
+\end{figure}
+
+Now, that we know that our coefficients are correctly calculated, we will implement the pass band filter with ideal coupled lines. For that we will be using the different even and odd impedances calculated previously. For the circuit shown in the Figure \ref{fig:design_circuit_elements:band_pass_filter_coupled_lines_ideal_circuit}, we get the simulation in Figure \ref{fig:design_circuit_elements:band_pass_filter_coupled_lines_ideal_graph}. In the simulation we can see that we get the same results as the filter implementation with inverters (see Figure \ref{fig:design_circuit_elements:band_pass_fitlter_inverters_graph}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/band_pass_filter_coupled_lines_ideal_circuit.png}
+    \caption{Filter implementation with ideal coupled lines}
+    \label{fig:design_circuit_elements:band_pass_filter_coupled_lines_ideal_circuit}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/band_pass_filter_coupled_lines_ideal_graph.png}
+    \caption{Simulation of the filter implementation with ideal coupled lines (see Figure \ref{fig:design_circuit_elements:band_pass_filter_coupled_lines_ideal_circuit})}
+    \label{fig:design_circuit_elements:band_pass_filter_coupled_lines_ideal_graph}
+\end{figure}
 
 \section{Directional Coupler}
 
@@ -940,6 +1006,7 @@ Note: the width, $W_{50} = 1.85 mm$, we use is the one calculated in Figure \ref
 
 
 \section{Second Stage: Balanced Amplifier}
+
 \section{Band Pass Filter}
 
 In the band pass filter, in order to design the circuit, we will need to calculate the parameters of the coupled lines for the microstrip implementation.
