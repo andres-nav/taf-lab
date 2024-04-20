@@ -487,7 +487,7 @@ For the Vendor's Bias Network, we will be using the circuit pictured in Figure \
 
 \subsection{Wide band Simulation of the Proposed Bias Network}
 
-For the proposed bias network, we will be using the circuit shown in Figure \ref{fig:design_circuit_elements:bias_network_proposed_circuit}. And for this circuit, we get the following simulation (see Figure \ref{fig:design_circuit_elements:bias_network_proposed_graph}). If we compare it to the bias network that the vendor recommended (see Figure \ref{fig:design_circuit_elements:bias_network_vendor_graph}), we can see that the values are almost the same. However ... \question{why is the proposed network better? is it because the cap makes the ground more stable for high frequency?}
+For the proposed bias network, we will be using the circuit shown in Figure \ref{fig:design_circuit_elements:bias_network_proposed_circuit}. And for this circuit, we get the following simulation (see Figure \ref{fig:design_circuit_elements:bias_network_proposed_graph}). If we compare it to the bias network that the vendor recommended (see Figure \ref{fig:design_circuit_elements:bias_network_vendor_graph}), we can see that the values for the S-parameters are almost the same. However, that is only for our working frequency of $f_0 = 3 GHz$. If we look at the $s_{21}$ parameter, we can see that it is smoother in the proposed network. That is because as we have the capacitor in parallel with the resistor, then the node between them will have a stable ground when working at high frequencies.
 
 \begin{figure}[htbp]
     \centering
@@ -503,8 +503,14 @@ For the proposed bias network, we will be using the circuit shown in Figure \ref
     \label{fig:design_circuit_elements:bias_network_proposed_graph}
 \end{figure}
 
-\todo{Modify the characteristic impedance of the transmission line, and justify why it is interesting to use a characteristic impedance as high as possible.}
-\question{ why modify the characteristic impedance of the TL4? i want it to be lambda/4 no?}
+If we modify the characteristic impedance of the transmission line (we will make it the same as $Z_0$), we can see in Figure \ref{fig:design_circuit_elements:gva83+_bias_transmission_line_low_z_0}, that the circuit behaves the same for the desired frequency of $f_0 = 3 GHz$. However, outside that frequency the amplification diminishes and it is not as effective as the network with the highest $Z_0$, smallest width of $w = 0.2 mm$ (see Figure \ref{fig:design_circuit_elements:bias_network_proposed_graph}). Therefore, having a really high $Z_0$ in the transmission lines assures us that the bias network will work at a wider range of frequencies than our $f_0$.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//design_circuit_elements/gva83+_bias_transmission_line_low_z_0.png}
+    \caption{Proposed bias network with a TL width of $w = 1.85083 mm$}
+    \label{fig:design_circuit_elements:gva83+_bias_transmission_line_low_z_0}
+\end{figure}
 
 \section{GVA83+ response}
  
