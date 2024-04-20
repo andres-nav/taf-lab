@@ -979,7 +979,7 @@ Here we can observe that the implementation of the Wilkinson power divider / com
 
 \subsection{Implementation with TEE junctions}
 
-In order to incorporate the Wilkinson power divider / combiner in a microstrip technology, we will be using TEE junctions as \question{why is it better?}. For this implementation we will have to calculate the different radius shown in Figure \ref{fig:microstrip_elements:wilkinson_tee_design}. Note that the Gap will be the one required to solder the 0603 SMD resistor, for our case, we will be using $Gap = 1 mm$.
+In order to incorporate the Wilkinson power divider / combiner in a microstrip technology, we will be using TEE junctions. For this implementation we will have to calculate the different radius shown in Figure \ref{fig:microstrip_elements:wilkinson_tee_design}. Note that the Gap will be the one required to solder the 0603 SMD resistor, for our case, we will be using $Gap = 1 mm$.
 
 \begin{figure}
     \centering
@@ -996,20 +996,76 @@ In order to incorporate the Wilkinson power divider / combiner in a microstrip t
     r_2 &= r_1 - \frac{W_{50} + Gap}{2}  \\
     &= 4.031 \cdot 10^{-3} - \frac{1.85 \cdot 10^{-3} + 1 \cdot 10^{-3}}{2}  \\
     &= 2.606 \cdot 10^{-3} m = 2.606 mm \\
-    \\
-    r_3 &= \frac{\lambda}{2} = \frac{c}{f \* \sqrt{\epsilon_r}} \\
-    &= \frac{3 \cdot 10^8}{3 \cdot 10^9 \* \sqrt{6.15}} \\
-    &= 0.04032 m = 40.32 mm \\
 \end{align*}
-
-\todo{fix r3 as it is wrong, it only serves}
 
 Note: the width, $W_{50} = 1.85 mm$, we use is the one calculated in Figure \ref{fig:previous_work:duroid_6006_h_1_27_mm_50_ohm}.
 
-\todo{add circuit, graph and layout}
+And for $r_3$, we will be using a radius big enough so the amplifier stage fits in the balanced amplifier. For our case we will be using a radium of $r_3 = \lambda / 32 = 40.32 / 32 = 1.26 mm$.
+
+In the Figure \ref{fig:microstrip_elements:wilkinson_microstrip_graph}, we can see the simulation of the Wilkinson power divider / combiner implemented in microstrip technology (see Figure \ref{fig:microstrip_elements:wilkinson_microstrip_circuit} to see the circuit implemented). Here we can observe that the theoretical calculations do not fit the requirement for our working frequency of $f_0 = 3 GHz$. Thus we will tune the circuit in order to adapt it for our working frequency using the AWR Tune Tool.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_microstrip_circuit.png}
+    \caption{Wilkinson power divider / combiner circuit}
+    \label{fig:microstrip_elements:wilkinson_microstrip_circuit}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_microstrip_graph.png}
+    \caption{Wilkinson power divider / combiner simulation of circuit in Figure \ref{fig:microstrip_elements:wilkinson_microstrip_circuit}}
+    \label{fig:microstrip_elements:wilkinson_microstrip_graph}
+\end{figure}
+
+For the circuit tuned, we get slightly different values of $r_1 = 4.45mm$ and $r_2 = 3.35 mm$. For this we get the simulation shown in Figure \ref{fig:microstrip_elements:wilkinson_microstrip_tune_graph}, we can see that the Wilkinson is working perfectly. This is because the power is divided in half to the two output ports $s_{21}$ and $s_{31}$ and the reflection $s_{11}$ is negligible.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_microstrip_tune_graph.png}
+    \caption{Simulation of the Wilkinson power divider / combiner tuned}
+    \label{fig:microstrip_elements:wilkinson_microstrip_tune_graph}
+\end{figure}
+
+\subsection{Layout}
+
+For the layout, we got the one show in Figure \ref{fig:microstrip_elements:wilkinson_microstrip_tune_layout}. One important note is that we added transmission lines at the junction between the input port and the two branches. The length was the one required for the layout to be able to snap together.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/wilkinson_microstrip_tune_layout.png}
+    \caption{Layout of the Wilkinson power divider / combiner}
+    \label{fig:microstrip_elements:wilkinson_microstrip_tune_layout}
+\end{figure}
 
 \section{First Stage: Simple Amplifier}
 
+For the simple amplifier, we have implemented the circuit show in Figure \ref{fig:microstrip_elements:simple_amplifier_microstrip_circuit}. One thing to take into consideration, is that we have added small segments of transmission lines between the lumped elements so there is space for the layout design to be implemented.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/simple_amplifier_microstrip_circuit.png}
+    \caption{Circuit of first stage: simple amplifier}
+    \label{fig:microstrip_elements:simple_amplifier_microstrip_circuit}
+\end{figure}
+
+The simulation for this circuit can be shown in Figure \ref{fig:microstrip_elements:simple_amplifier_microstrip_graph}. If we compare it with the data sheet of the amplifier (see Figure \ref{fig:design_circuit_elements:scattering_parameters_datasheet}), we can see that they are almost the same.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/simple_amplifier_microstrip_graph.png}
+    \caption{Simulation of the first stage: simple amplifier show in Figure \ref{fig:microstrip_elements:simple_amplifier_microstrip_circuit}}
+    \label{fig:microstrip_elements:simple_amplifier_microstrip_graph}
+\end{figure}
+
+Finally, the microstrip layout can be seen in Figure \ref{fig:microstrip_elements:simple_amplifier_microstrip_layout}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/simple_amplifier_microstrip_layout.png}
+    \caption{Layout of the simple amplifier}
+    \label{fig:microstrip_elements:simple_amplifier_microstrip_layout}
+\end{figure}
 
 \section{Second Stage: Balanced Amplifier}
 
