@@ -216,6 +216,22 @@ hmargin=3cm
 \widowpenalties 1 10000
 \raggedbottom
 
+% make sections in a new page
+\let\oldsection\section
+\renewcommand\section{\clearpage\oldsection}
+\usepackage{etoolbox}
+\usepackage{titlesec}
+\usepackage{lipsum} % for dummy text, you can remove this in your actual document
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\centering}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\centering}{\thesection}{1em}{}
+
+\makeatletter
+\pretocmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi\thispagestyle{empty}}{}{}
+\makeatother
 
 \begin{document}
 \pagenumbering{roman} % Se utilizan cifras romanas en la numeración de las páginas previas al cuerpo del trabajo
@@ -1058,6 +1074,8 @@ The simulation for this circuit can be shown in Figure \ref{fig:microstrip_eleme
     \label{fig:microstrip_elements:simple_amplifier_microstrip_graph}
 \end{figure}
 
+\subsection{Layout}
+
 Finally, the microstrip layout can be seen in Figure \ref{fig:microstrip_elements:simple_amplifier_microstrip_layout}.
 
 \begin{figure}[htbp]
@@ -1069,9 +1087,38 @@ Finally, the microstrip layout can be seen in Figure \ref{fig:microstrip_element
 
 \section{Second Stage: Balanced Amplifier}
 
+For the second stage, we have implemented the circuit show in Figure \ref{fig:microstrip_elements:balanced_amplifier_microstrip_circuit}.  Here we have used the previous circuits such as the Wilkinson power divider / combiner and the bias network for the amplifier.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/balanced_amplifier_microstrip_circuit.png}
+    \caption{Circuit of the balanced amplifier}
+    \label{fig:microstrip_elements:balanced_amplifier_microstrip_circuit}
+\end{figure}
+
+If we compare the simulation of the balanced amplifier (see Figure \ref{fig:microstrip_elements:balanced_amplifier_microstrip_graph}) with the simulation for the simple amplifier (see Figure \ref{fig:microstrip_elements:simple_amplifier_microstrip_graph}); we can see that they have the same gain as calculated previously. However, the isolation of the balanced amplifier is much higher than the simple amplifier (as it has much lower $s_{11}$, $s_{12}$, and $s_{22}$. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/balanced_amplifier_microstrip_graph.png}
+    \caption{Simulation of the balanced amplifier in Figure \ref{fig:microstrip_elements:balanced_amplifier_microstrip_circuit}}
+    \label{fig:microstrip_elements:balanced_amplifier_microstrip_graph}
+\end{figure}
+
+\subsection{Layout}
+
+For the layout, it can be seen in Figure \ref{fig:microstrip_elements:balanced_amplifier_microstrip_layout}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/balanced_amplifier_microstrip_layout.png}
+    \caption{Layout of the balanced amplifier of Figure \ref{fig:microstrip_elements:balanced_amplifier_microstrip_circuit}}
+    \label{fig:microstrip_elements:balanced_amplifier_microstrip_layout}
+\end{figure}
+
 \section{Band Pass Filter}
 
-In the band pass filter, in order to design the circuit, we will need to calculate the parameters of the coupled lines for the microstrip implementation.
+In the band pass filter, in order to design the circuit with microstrip technology, we will need to calculate the parameters of the coupled lines for the microstrip implementation.
 
 \subsection{Calculations of the length, width, and separation of the coupled lines}
 
@@ -1122,7 +1169,108 @@ Where:
     &\text{s: is the separation of the coupled line} \\
 \end{align*}
 
-\subsection{Simulations of the microstrip implementation}
+\subsection{MCLIN implentation}
+
+With all the sections calculates, we can implement the circuit in AWR using MCLIN coupled lines (see Figure \ref{fig:microstrip_elements:fitler_coupled_lines_mclin_circuit}). For the simulation shown in Figure \ref{fig:microstrip_elements:filter_coupled_lines_mclin_graph}, we can see that the band pass filter is working correctly.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/fitler_coupled_lines_mclin_circuit.png}
+    \caption{Circuit for the band pass filter implemented with MCLIN coupled lines}
+    \label{fig:microstrip_elements:fitler_coupled_lines_mclin_circuit}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/filter_coupled_lines_mclin_graph.png}
+    \caption{Simulation of the band pass filter with MCLIN coupled lines (see Figure \ref{fig:microstrip_elements:fitler_coupled_lines_mclin_circuit})}
+    \label{fig:microstrip_elements:filter_coupled_lines_mclin_graph}
+\end{figure}
+
+\subsection{MCFIL implementation}
+
+Now we will implement it with MCFIL lines. In Figure \ref{fig:microstrip_elements:filter_coupled_lines_mcfil_circuit}, we can see the circuit implemented and in Figure \ref{fig:microstrip_elements:filter_coupled_lines_mcfil_graph}, we can see the simulation. Here we can observe that the center frequency of the filter has been shifted to the left to around $f_0 = 2.9 GHz$. This is because the difference in the widths of the coupled lines make the response of the filter shift. So let's fix it by tuning the widths and lengths of the coupled lines.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/filter_coupled_lines_mcfil_circuit.png}
+    \caption{Circuit of the band pass filter with MCFIL coupled lines}
+    \label{fig:microstrip_elements:filter_coupled_lines_mcfil_circuit}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/filter_coupled_lines_mcfil_graph.png}
+    \caption{Simulation of the band pass filter with MCFIL coupled lines (see Figure \ref{fig:microstrip_elements:filter_coupled_lines_mcfil_circuit})}
+    \label{fig:microstrip_elements:filter_coupled_lines_mcfil_graph}
+\end{figure}
+
+\subsection{MCFIL implementation tuned to our desired characteristics}
+
+After some tuning with the AWR Tune Tool, we got the following dimensions for the different coupled lines for the band pass filter:
+\begin{align*}
+w_1 &= 1.3 mm\\
+s_1 &= 0.417635 mm \\
+l_1 &= 11.6 mm \\
+\\
+w_2 &= 1.4 mm \\
+s_2 &= 2.19832 mm \\
+l_2 &= 11.5 mm \\
+\\
+w_3 &= 1.3 mm \\
+s_3 &= 2.91747 mm \\
+l_3 &= 11.6 mm \\
+\\
+w_4 &= 1.4 mm \\
+s_4 &= 3.04061 mm \\
+l_4 &= 11.5 mm \\
+\\
+w_5 &= 1.3 mm \\
+s_5 &= 2.91747 mm \\
+l_5 &= 11.6 mm \\
+\\
+w_6 &= 1.4 mm \\
+s_6 &= 2.1981 mm \\
+l_6 &= 11.5 mm \\
+\\
+w_7 &= 1.3 mm \\
+s_7 &= 0.417635 mm \\
+l_7 &= 11.6 mm \\
+\end{align*}
+
+Where:
+\begin{align*}
+    &\text{w: is the width of the coupled line} \\
+    &\text{h: is the height of the coupled line} \\
+    &\text{s: is the separation of the coupled line} \\
+\end{align*}
+
+For the final circuit, it can be seen in Figure \ref{fig:microstrip_elements:filter_coupled_lines_mcfil_tuned_circuit}. Noticed that we have used MSTEP elements in order to adapt the different widths of the coupled lines. And in the simulation (see Figure \ref{fig:microstrip_elements:filter_coupled_lines_mcfil_tuned_graph}), we can see that now the filter is centered at our desired frequency of $f_0 = 3 GHz$. However, the attenuation at the pass band is a little bit lower than desired, but we where not able to get an attenuation lower than 20 dB.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/filter_coupled_lines_mcfil_tuned_circuit.png}
+    \caption{Circuit for the final band pass filter with MCFIL coupled lines}
+    \label{fig:microstrip_elements:filter_coupled_lines_mcfil_tuned_circuit}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/filter_coupled_lines_mcfil_tuned_graph.png}
+    \caption{Simulation for the final band pass filter of Figure \ref{fig:microstrip_elements:filter_coupled_lines_mcfil_tuned_circuit}}
+    \label{fig:microstrip_elements:filter_coupled_lines_mcfil_tuned_graph}
+\end{figure}
+
+\subsection{Layout}
+
+For the layout of the band pass filter, it can be seen in Figure .
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/filter_coupled_lines_mcfil_tuned_layout.png}
+    \caption{Layout of the final band pass filter of Figure \ref{fig:microstrip_elements:filter_coupled_lines_mcfil_tuned_circuit}}
+    \label{fig:microstrip_elements:filter_coupled_lines_mcfil_tuned_layout}
+\end{figure}
 
 \section{Directional Coupler}
 
@@ -1130,12 +1278,34 @@ For the directional coupler, in order to adapt the ideal directional coupler of 
 
 \subsection{Calculation of the length, width, and separation of the coupled microstrip lines}
 
-In order to calculate the, we used the Tunner Tool of AWR where we modified the length (L), width (W), and separation (S) until we got a coupling of $C = 20 \ dB$ and a reflected power of as low as possible. For this simulation we have used the circuit pictured in Figure .
+In order to calculate the, we used the Tunner Tool of AWR where we modified the length (L), width (W), and separation (S) until we got a coupling of $C = 20 \ dB$ and a reflected power of as low as possible. For this simulation we have used the circuit pictured in Figure \ref{fig:microstrip_elements:directional_coupler_real_circuit}. Notice that the elements on the coupled port are just to be able to be implemented in the microstrip technology to have space in the PCB to place the elements. 
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/directional_coupler_real_circuit.png}
+    \caption{Circuit of the final directional coupler implementation}
+    \label{fig:microstrip_elements:directional_coupler_real_circuit}
+\end{figure}
 
+The simulation can be seen in the Figure \ref{fig:microstrip_elements:directional_coupler_real_graph}. Here we can observer that the microstrip implementation is as good as the ideal implementation (see Figure \ref{fig:design_circuit_elements:directional_coupler_ideal_graph}).
 
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/directional_coupler_real_graph.png}
+    \caption{Simulation of the directional coupler shown in Figure \ref{fig:microstrip_elements:directional_coupler_real_circuit}}
+    \label{fig:microstrip_elements:directional_coupler_real_graph}
+\end{figure}
 
+\subsection{Layout}
 
+For the layout, it can be seen in Figure \ref{fig:microstrip_elements:directional_coupler_real_layout}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//microstrip_elements/directional_coupler_real_layout.png}
+    \caption{Layout of the directional coupler shown in Figure \ref{fig:microstrip_elements:directional_coupler_real_circuit}}
+    \label{fig:microstrip_elements:directional_coupler_real_layout}
+\end{figure}
 
 %-------------------------------------
 \chapter{Integration}
