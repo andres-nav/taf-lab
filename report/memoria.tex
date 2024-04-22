@@ -248,57 +248,30 @@ hmargin=3cm
 		\end{figure}
 		\vspace{2.5cm}
 		\begin{Large}
-			Grado Universitario...\\			
-			 2020-2021\\ %Indica el curso académico
 			\vspace{2cm}		
-			\textsl{Trabajo Fin de Grado}
+			\textsl{High Frequency Technology}
 			\bigskip
 			
 		\end{Large}
-		 	{\Huge ``Título del trabajo''}\\
+		 	{\Huge Design of a two-stage, balanced amplifier}\\
 		 	\vspace*{0.5cm}
 	 		\rule{10.5cm}{0.1mm}\\
 			\vspace*{0.9cm}
-			{\LARGE Nombre Apellido1 Apellido2}\\ 
+			{\LARGE Andrés Navarro Pedregal (100451730)}\\ 
+            {\LARGE \&}\\
+			{\LARGE Daniel Toribio Bruna (100454242)}\\ 
 			\vspace*{1cm}
+	\vfill
 		\begin{Large}
-			Tutor/es\\
-			Nombre Apellido1 Apellido2\\
-			Nombre Apellido1 Apellido2\\
-			Lugar y fecha de presentación prevista\\
+			\today
 		\end{Large}
 	\end{center}
-	\vfill
-	\color{black}
-	% SI NUESTRO TRABAJO SE VA A PUBLICAR CON UNA LICENCIA CREATIVE COMMONS, INCLUIR ESTAS LÍNEAS. ES LA OPCIÓN RECOMENDADA.
-	\includegraphics[width=4.2cm]{creativecommons.png}\\ %incluimos el logotipo de Creative Commons
-	Esta obra se encuentra sujeta a la licencia Creative Commons \textbf{Reconocimiento - No Comercial - Sin Obra Derivada}
 	\end{sffamily}
 \end{titlepage}
 
 \newpage %página en blanco o de cortesía
 \thispagestyle{empty}
 \mbox{}
-
-%----------
-%	RESUMEN Y PALABRAS CLAVE
-%----------	
-\renewcommand\abstractname{\large\bfseries\filcenter\uppercase{Resumen}}
-\begin{abstract}
-\thispagestyle{plain}
-\setcounter{page}{3}
-	
-	% ESCRIBIR EL RESUMEN AQUÍ
-	
-	\textbf{Palabras clave:}
-	% Escribir las palabras clave aquí
-	
-	\vfill
-\end{abstract}
-	\newpage % página en blanco o de cortesía
-	\thispagestyle{empty}
-	\mbox{}
-
 
 %----------
 %	ÍNDICES
@@ -325,7 +298,9 @@ hmargin=3cm
 %-------------------------------------
 \chapter{Introduction}
 
-\todo{introduction saying what we are going to do}
+In this laboratory exercise, we focus on designing and understanding a two-stage microwave amplifier. Our goal is to create a device that can increase the power of microwave signals efficiently for a specific frequency range. We will be using a commercial integrated amplifier called GVA-83+ for the main part of our design. We will be using microstrip technology, which is common in microwave circuits, to build our amplifier.
+
+Amplifiers have limits, like how much power they can give out and how much they can boost the signal. To overcome these limits, we're using a two-stage design. This means we connect two amplifiers together to get more power. We're also using special techniques like splitting the signal into two parts and amplifying each part separately. Then, we combine them again to get even more power and reduce the noise induced by the amplification. This is called a balanced amplifier. Our design also includes a band pass filter to make sure we only amplify the frequency range we want. 
 
 \section{Initial parameters}
 
@@ -337,9 +312,6 @@ For our case the initial parameters that we will be using will be the ones given
     \caption{Initial parameters for our case study.}
     \label{fig:introduction:initial_parameters}
 \end{figure}
-
-\todo{add a section with the constants used (image of awr)}
-
 
 %-------------------------------------
 \chapter{Previous Work}
@@ -1312,47 +1284,75 @@ For the layout, it can be seen in Figure \ref{fig:microstrip_elements:directiona
 
 \section{Common Microstrip Layout}
 
+The full circuit implementation can be seen in Figure \ref{fig:integration:complete_circuit_circuit} and the layout can be seen in Figure \ref{fig:integration:complete_circuit_layout}. One thing to take into consideration is that we have added TLs at the end of the ports in order to give some room in the PCB to solder the elements. And also, we did not need to add any matching elements as the circuits where matched to a characteristic impedance of $Z_0 = 50 \Omega$, thus not needing any further matching.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//integration/complete_circuit_circuit.png}
+    \caption{Full circuit schematics}
+    \label{fig:integration:complete_circuit_circuit}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//integration/complete_circuit_layout.png}
+    \caption{Layout of the complete circuit of Figure \ref{fig:integration:complete_circuit_circuit}}
+    \label{fig:integration:complete_circuit_layout}
+\end{figure}
+
 \section{Simulation of the Full Network at Working Frequencies}
 
-\section{Matching Networks} % Maybe it is not necessary
+In the Figure \ref{fig:integration:complete_circuit_graph_working_freq}, we can observe the response of our circuit at the working frequencies. Here we can observe that the 2 stage amplifier works at the desired pass band with a gain of $G = 28.71 dB$ and an attenuation almost negligible. On the other hand, at the other frequencies, the filter does not allow any frequency through.
 
-\section{Simulation of the Full Network Wideband Response (0GHz up to 7GHz}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//integration/complete_circuit_graph_working_freq.png}
+    \caption{Simulation of the full circuit of Figure \ref{fig:integration:complete_circuit_circuit} at working frequencies.}
+    \label{fig:integration:complete_circuit_graph_working_freq}
+\end{figure}
 
+\section{Simulation of the Full Network Wide band Response (0GHz up to 7GHz)}
 
+For the full response of our circuit, it can be seen in Figure \ref{fig:integration:complete_circuit_graph_full_freq}. Here we can see that the circuit works at expected as it only allows the desired frequency. However, at $f = 6 GHz$, the filter allows the signal to be amplified. This is because the filter we have implemented has resonant frequencies and this is one of them.
 
-
-
-
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//integration/complete_circuit_graph_full_freq.png}
+    \caption{Simulation of the full circuit of Figure \ref{fig:integration:complete_circuit_circuit} at the full range of frequencies}
+    \label{fig:integration:complete_circuit_graph_full_freq}
+\end{figure}
 
 %-------------------------------------
 \chapter{Results and Conclusions}
 
 \section{Comparison of the System Specifications with the Simulated Results}
 
-\section{Conclusions} % where you justify your design decisions, and any possible specifications that are not fulfilled, and also the critical aspects of the design.
+For the final results we will comparing the simulated results to the requirements for the circuit. We will use the simulation in Figure \ref{fig:results:graph} to make the comparisons.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images//results/graph.png}
+    \caption{Simulation of the final circuit with interesting markers}
+    \label{fig:results:graph}
+\end{figure}
 
+\begin{itemize}
+    \item  We can see that the centered frequency $f_0 = 3 GHz$ is the same as the requirements. 
+    \item For the bandwidth, in the simulation we can see that it goes from $2.925 GHz$ to $3.075 GHz$; which is the same as the specifications stated.
+    \item For the gain of the amplifier, we get the same results calculated previously of $28 dB$.
+    \item The return loss at the input port of our circuit is $15 dB$ which does not pass the requirements of $30 dB$. However, after trying to tune the filter and coupled lines we were not able to achieve any higher return loss at the input port.
+    \item For the return loss at the output port, we get $16 dB$ which is close to the requirement of $18 dB$. We were able to increase the return loss by tuning the circuit but not to get the required return loss.
+    \item For the attenuation outside the pass band, we get an attenuation much lower than 25 dB that were required.
+    \item Finally, for the power at the monitor, we get exactly 20 dB lower to the main output port.
+\end{itemize}
 
+\section{Conclusions} 
 
+The design and characterization of a two-stage, balanced microwave amplifier represent a significant achievement in the field of high-frequency technologies. Through theoretical analysis and practical implementation, we have successfully met the objectives outlined in this laboratory exercise. Our design approach was guided by the need to overcome inherent limitations of amplifiers, focusing on maximizing gain while ensuring efficient power utilization.
 
+The first stage of our amplifier utilized a commercial integrated amplifier, GVA-83+, configured as a simple amplifier. By leveraging data provided by the manufacturer and implementing bias and DC block networks, we ensured proper operation within specified parameters. Additionally, the balanced second stage, featuring phase shifters and Wilkinson power dividers/combiners, enabled enhanced performance and power distribution. Through careful design and simulation, we achieved the desired specifications, including a center frequency within the desired range, high gain, and effective suppression of out-of-band frequencies.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Furthermore, our design process involved the meticulous design and integration of other crucial components such as the band pass filter and directional coupler. These elements, designed with microstrip technology, contributed to the overall functionality and performance of the amplifier. Our comprehensive approach, from theoretical analysis to practical implementation and simulation, has resulted in a robust and efficient microwave amplifier design. However, further optimization and refinement may be warranted to address any discrepancies between simulated and desired specifications, ensuring the amplifier meets the highest standards of performance and reliability in real-world applications.
 
 %----------
 %	BIBLIOGRAFÍA
