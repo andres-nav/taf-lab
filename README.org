@@ -19,3 +19,8 @@ The main part of this project were:
 - Architecture of a directional coupler
 
 For more information, please refer to the [[./report.pdf][report]].
+
+** About Me
+[[https://andresnav.com][Check out my website]] to know more about me.
+
+And if you want to get in contact with me, you can [[https://linkedin.com/in/andresnav][connect with me via LinkedIn]].
